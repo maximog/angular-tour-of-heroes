@@ -3,6 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+//NgRx
+import { StoreModule } from '@ngrx/store';
+import { heroesReducer } from './heroes.reducer';
+
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 
@@ -31,6 +35,7 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
     }),
+    StoreModule.forRoot({ hero: heroesReducer }),
   ],
   providers: [],
   bootstrap: [AppComponent],

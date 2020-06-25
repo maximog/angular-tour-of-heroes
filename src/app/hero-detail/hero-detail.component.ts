@@ -3,6 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { HeroService } from '../hero.service';
 
+//NgRx
+import { Store, select } from '@ngrx/store';
+import * as heroActions from '../heroes.actions';
+import * as fromRoot from '../heroes.reducer';
+
 import { Hero } from '../hero';
 
 @Component({
@@ -16,7 +21,8 @@ export class HeroDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
-    private location: Location
+    private location: Location,
+    private store: Store<fromRoot.AppState>
   ) {}
 
   ngOnInit(): void {
@@ -25,7 +31,13 @@ export class HeroDetailComponent implements OnInit {
 
   getHero(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.heroService.getHero(id).subscribe((hero) => (this.hero = hero));
+    this.heroService.getHero(id).subscribe((hero) => {
+      this.store.dispatch(
+        new heroActions.SelectedHeroSaved({ selectedHero: hero })
+      );
+      console.log(this.store);
+      this.hero = hero;
+    });
   }
 
   goBack(): void {
