@@ -15,24 +15,25 @@ import { Observable } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
-  selectedHero$: Observable<Hero>;
+  selectedHero$: Observable<string> = this.store.pipe(
+    select(fromRoot.selectSelectedHeroName)
+  );
+  heroesFromState$: Observable<Hero[]> = this.store.pipe(
+    select(fromRoot.selectHeroes)
+  );
 
   constructor(
     private heroService: HeroService,
     private store: Store<fromRoot.AppState>
-  ) {
-    this.selectedHero$ = this.store.select(fromRoot.getSelectedHero);
-  }
+  ) {}
 
   ngOnInit() {
     this.getHeroes();
-    console.log(this.selectedHero$);
   }
 
   getHeroes(): void {
     this.heroService.getHeroes().subscribe((heroes) => {
       this.store.dispatch(new heroActions.HeroesSaved({ heroes }));
-      console.log(this.store);
       return (this.heroes = heroes.slice(1, 5));
     });
   }

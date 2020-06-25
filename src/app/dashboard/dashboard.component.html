@@ -10,6 +10,14 @@
     </div>
   </a>
 </div>
-<div *ngIf="selectedHero$">Hola {{ selectedHero$ | async }}</div>
+<div>Last Selected: {{ selectedHero$ | async }}</div>
+<h3>Heroes from State</h3>
+<div *ngFor="let hero of heroesFromState$ | async">
+  <ul>
+    <h4 class="module hero" routerLink="/detail/{{ hero.id }}">
+      {{ hero.name }}
+    </h4>
+  </ul>
+</div>
 
 <app-hero-search></app-hero-search>

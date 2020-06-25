@@ -1,9 +1,16 @@
 import { Hero } from './hero';
 import { HeroActions, HeroesActionTypes } from './heroes.actions';
+import {
+  createSelector,
+  createFeatureSelector,
+  ActionReducerMap,
+} from '@ngrx/store';
+
+// export interface AppState { heroes: Heroes}
 
 export interface AppState {
   heroes: Hero[];
-  selectedHero?: Hero;
+  selectedHero: Hero;
 }
 
 export const initialHeroes = [
@@ -21,10 +28,27 @@ export const initialHeroes = [
 
 export const initialState: AppState = {
   heroes: initialHeroes,
+  selectedHero: { id: 11, name: 'Dr Nice' },
 };
 
-export const getHeroes = (state: AppState) => state.heroes;
-export const getSelectedHero = (state: AppState) => state.selectedHero;
+export const selectHero = (state): AppState => state.hero;
+
+export const selectHeroes = createSelector(
+  selectHero,
+  (state: AppState) => state.heroes
+);
+
+export const selectSelectedHero = createSelector(
+  selectHero,
+  (state: AppState) => state.selectedHero
+);
+
+export const selectSelectedHeroName = createSelector(
+  selectSelectedHero,
+  (state: Hero) => {
+    return state?.name;
+  }
+);
 
 export function heroesReducer(
   state = initialState,
